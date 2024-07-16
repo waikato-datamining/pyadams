@@ -12,6 +12,8 @@ def get_classname(obj):
     :return: the classname
     :rtype: str
     """
+    if isinstance(obj, JavaObject):
+        obj = obj.jobject
     if isinstance(obj, JObject):
         return obj.getClass().getName()
     elif inspect.isclass(obj):
@@ -25,12 +27,14 @@ def is_instance_of(obj, class_or_intf_name):
     Checks whether the Java object implements the specified interface or is a subclass of the superclass.
 
     :param obj: the Java object to check
-    :type obj: JPype object
+    :type obj: JPype object or JavaObject
     :param class_or_intf_name: the superclass or interface to check, dot notation
     :type class_or_intf_name: str
     :return: true if either implements interface or subclass of superclass
     :rtype: bool
     """
+    if isinstance(obj, JavaObject):
+        obj = obj.jobject
     classname = get_classname(obj)
     # array? retrieve component type and check that
     if is_array(obj):
@@ -47,10 +51,12 @@ def is_array(obj):
     Checks whether the Java object is an array.
 
     :param obj: the Java object to check
-    :type obj: JPype object
+    :type obj: JPype object or JavaObject
     :return: whether the object is an array
     :rtype: bool
     """
+    if isinstance(obj, JavaObject):
+        obj = obj.jobject
     return obj.getClass().isArray()
 
 
