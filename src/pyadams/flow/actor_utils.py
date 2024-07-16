@@ -1,4 +1,7 @@
+import pyadams.core.jvm as jvm
+
 from jpype import JClass
+from pyadams.core.classes import is_instance_of
 from pyadams.flow.core import Actor
 
 _ActorUtils = None
@@ -73,7 +76,10 @@ def read(flow_file: str) -> Actor:
     :return: the Actor or None if failed to load
     :rtype: str
     """
-    return Actor(_get_actor_utils().read(flow_file))
+    result = Actor(_get_actor_utils().read(flow_file))
+    if jvm.is_headless and is_instance_of(result, "adams.flow.control.Flow"):
+        result.jobject.setHeadless(True)
+    return result
 
 
 def write(flow_file: str, actor: Actor) -> bool:
