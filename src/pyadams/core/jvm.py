@@ -16,12 +16,16 @@
 
 import logging
 import os
-import sys
 from typing import List
 
+import pyadams.core.platform as platform
 import jpype
 from jpype import JClass
+from wai.logging import init_logging
 
+
+ENV_PYADAMS_LOGLEVEL = "PYADAMS_LOGLEVEL"
+""" environment variable for the global default logging level. """
 
 is_started = None
 """ whether the JVM has been started """
@@ -30,9 +34,9 @@ is_headless = None
 """ whether we are running in headless mode. """
 
 # logging setup
-logging.basicConfig()
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+init_logging(env_var=ENV_PYADAMS_LOGLEVEL)
+_logger = logging.getLogger(__name__)
+_logger.setLevel(logging.DEBUG)
 
 
 def add_lib_dir(root_dir: str, cp: List[str]):
@@ -50,11 +54,11 @@ def add_lib_dir(root_dir: str, cp: List[str]):
     cp.append(os.path.join(root_dir, "lib", "*"))
 
     sub_dir = None
-    if sys.platform == "linux":
+    if platform.is_linux():
         sub_dir = "linux64"
-    elif sys.platform == "win32":
+    elif platform.is_windows():
         sub_dir = "windows64"
-    elif sys.platform == "darwin":
+    elif platform.is_mac():
         sub_dir = "macosx64"
     if sub_dir is not None:
         cp.append(os.path.join(root_dir, "lib", sub_dir, "*"))
@@ -72,7 +76,7 @@ def add_system_classpath(cp: List[str]):
         for part in parts:
             cp.append(part)
     else:
-        logger.warning("Cannot add system's classpath, as environment variable CLASSPATH not set.")
+        _logger.warning("Cannot add system's classpath, as environment variable CLASSPATH not set.")
 
 
 def start(root_dir: str, system_cp: bool = False, max_heap_size: str = None, headless: bool = False,
@@ -95,12 +99,12 @@ def start(root_dir: str, system_cp: bool = False, max_heap_size: str = None, hea
     :param logging_level: the logging level to use for this module, e.g., logging.DEBUG or logging.INFO
     :type logging_level: int
     """
-    global is_started, is_headless, logger
+    global is_started, is_headless, _logger
 
-    logger.setLevel(logging_level)
+    _logger.setLevel(logging_level)
 
     if is_started is not None:
-        logger.info("JVM already running, call jvm.stop() first")
+        _logger.info("JVM already running, call jvm.stop() first")
         return
 
     full_cp = []
@@ -112,19 +116,19 @@ def start(root_dir: str, system_cp: bool = False, max_heap_size: str = None, hea
     # $HOME/.adams/wekafiles/X.Y.Z
 
     if system_cp:
-        logger.debug("Adding system classpath")
+        _logger.debug("Adding system classpath")
         add_system_classpath(full_cp)
 
-    logger.debug("Classpath=" + str(full_cp))
+    _logger.debug("Classpath=" + str(full_cp))
 
     args = []
 
     # heapsize
     if max_heap_size is not None:
-        logger.debug("MaxHeapSize=%s" % max_heap_size)
+        _logger.debug("MaxHeapSize=%s" % max_heap_size)
         args.append("-Xmx%s" % max_heap_size)
     else:
-        logger.debug("MaxHeapSize=default")
+        _logger.debug("MaxHeapSize=default")
 
     # headless mode
     is_headless = headless
@@ -135,7 +139,7 @@ def start(root_dir: str, system_cp: bool = False, max_heap_size: str = None, hea
     is_started = True
 
     if system_info:
-        logger.debug(JClass("adams.core.SystemInfo")())
+        _logger.debug(JClass("adams.core.SystemInfo")())
 
 
 def stop():

@@ -33,12 +33,19 @@ setup(
         "pyadams",
         "pyadams.core",
         "pyadams.flow",
+        "pyadams.tools",
     ],
     version="0.0.1",
     author='Peter "fracpete" Reutemann',
     author_email='fracpete@waikato.ac.nz',
     install_requires=[
         "jpype1",
+        "requests",
+        "wai.logging",
     ],
+    entry_points={
+        "console_scripts": [
+            "pa-download=pyadams.tool.download:sys_main",
+        ],
+    },
 )
-
