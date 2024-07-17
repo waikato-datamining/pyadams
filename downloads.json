@@ -1,0 +1,18 @@
+{
+  "snapshots": {
+    "adams-base-all": "https://adams.cms.waikato.ac.nz/snapshots/adams/adams-base-all-snapshot-bin.zip",
+    "adams-basic-app": "https://adams.cms.waikato.ac.nz/snapshots/adams/adams-basic-app-snapshot-bin.zip",
+    "adams-addons-all": "https://adams.cms.waikato.ac.nz/snapshots/adams/adams-addons-all-snapshot-bin.zip",
+    "adams-annotator": "https://adams.cms.waikato.ac.nz/snapshots/adams/adams-annotator-snapshot-bin.zip",
+    "adams-ml-app": "https://adams.cms.waikato.ac.nz/snapshots/adams/adams-ml-app-snapshot-bin.zip",
+    "adams-spectral-app": "https://adams.cms.waikato.ac.nz/snapshots/adams/adams-spectral-app-snapshot-bin.zip"
+  },
+  "24.1.0": {
+    "adams-base-all": "https://sourceforge.net/projects/theadamsflow/files/24.1.0/adams-base-all-24.1.0-bin.zip/download",
+    "adams-basic-app": "https://sourceforge.net/projects/theadamsflow/files/24.1.0/adams-basic-app-24.1.0-bin.zip/download",
+    "adams-addons-all": "https://sourceforge.net/projects/theadamsflow/files/24.1.0/adams-addons-all-24.1.0-bin.zip/download",
+    "adams-annotator": "https://sourceforge.net/projects/theadamsflow/files/24.1.0/adams-annotator-24.1.0-bin.zip/download",
+    "adams-ml-app": "https://sourceforge.net/projects/theadamsflow/files/24.1.0/adams-ml-app-24.1.0-bin.zip/download",
+    "adams-spectral-app": "https://sourceforge.net/projects/theadamsflow/files/24.1.0/adams-spectral-app-24.1.0-bin.zip/download"
+  }
+}
