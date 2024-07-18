@@ -78,10 +78,10 @@ def list_downloads():
     if info is None:
         _logger.error("No downloads information available (%s), cannot list information!" % _downloads_info_file())
         return
+    print("version/name")
     for version in info:
-        print(version)
         for name in info[version]:
-            print("- %s" % name)
+            print("%s/%s" % (version, name))
 
 
 def download(version: str, name: str, output_dir: str, extract: bool):
