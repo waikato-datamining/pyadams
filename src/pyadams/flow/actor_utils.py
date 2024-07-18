@@ -2,6 +2,7 @@ import pyadams.core.jvm as jvm
 
 from jpype import JClass
 from pyadams.core.classes import is_instance_of
+from pyadams.core import MessageCollection
 from pyadams.flow.core import Actor
 
 _ActorUtils = None
@@ -67,16 +68,23 @@ def is_sink(actor: Actor) -> bool:
     return _get_actor_utils().isSink(actor.jobject)
 
 
-def read(flow_file: str) -> Actor:
+def read(flow_file: str, errors: MessageCollection = None, warnings: MessageCollection = None) -> Actor:
     """
     Reads the flow from disk and returns the actor.
 
     :param flow_file: the flow file to read
     :type flow_file: str
+    :param errors: for storing error messages
+    :type errors: MessageCollection
+    :param warnings: for storing warning messages
+    :type warnings: MessageCollection
     :return: the Actor or None if failed to load
     :rtype: str
     """
-    result = Actor(_get_actor_utils().read(flow_file))
+    result = Actor(_get_actor_utils().read(
+        flow_file,
+        None if (errors is None) else errors.jobject,
+        None if (warnings is None) else warnings.jobject))
     if jvm.is_headless and is_instance_of(result, "adams.flow.control.Flow"):
         result.jobject.setHeadless(True)
     return result
