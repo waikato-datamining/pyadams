@@ -20,6 +20,7 @@ from typing import List
 
 import pyadams.core.platform as platform
 import jpype
+import jpype.imports
 from jpype import JClass
 from wai.logging import init_logging
 
