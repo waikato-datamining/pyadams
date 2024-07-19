@@ -3,7 +3,7 @@ import pyadams.core.jvm as jvm
 from jpype import JClass
 from pyadams.core.classes import is_instance_of
 from pyadams.core import MessageCollection
-from pyadams.flow.core import Actor
+from ._core import Actor
 
 _ActorUtils = None
 
@@ -66,6 +66,42 @@ def is_sink(actor: Actor) -> bool:
     :rtype: bool
     """
     return _get_actor_utils().isSink(actor.jobject)
+
+
+def is_actor_handler(actor: Actor) -> bool:
+    """
+    Tests whether the actor is managing actors.
+
+    :param actor: the actor to check
+    :type actor: Actor
+    :return: whether the actor is an actor handler
+    :rtype: bool
+    """
+    return _get_actor_utils().isActorHandler(actor.jobject)
+
+
+def is_control_actor(actor: Actor) -> bool:
+    """
+    Tests whether the actor is a control actor.
+
+    :param actor: the actor to check
+    :type actor: Actor
+    :return: whether the actor is a control actor
+    :rtype: bool
+    """
+    return _get_actor_utils().isControlActor(actor.jobject)
+
+
+def is_interactive(actor: Actor) -> bool:
+    """
+    Tests whether the actor is an interactive actor.
+
+    :param actor: the actor to check
+    :type actor: Actor
+    :return: whether the actor is an interactive actor
+    :rtype: bool
+    """
+    return _get_actor_utils().isInteractive(actor.jobject)
 
 
 def read(flow_file: str, errors: MessageCollection = None, warnings: MessageCollection = None) -> Actor:
