@@ -1,4 +1,6 @@
 import json
+
+import jpype
 from jpype import JClass
 from typing import Optional, Dict, List
 from pyadams.core.classes import JavaObject
@@ -145,6 +147,10 @@ class Actor(JavaObject):
         """
         self.apply_json(json.dumps(d))
 
+    def to_dict(self) -> Dict:
+        # TODO
+        pass
+
     @classmethod
     def from_dict(cls, classname: str, d: Dict) -> 'Actor':
         """
@@ -174,6 +180,10 @@ class Actor(JavaObject):
         consumer = JClass("adams.core.option.JsonConsumer")()
         consumer.consume(self.jobject, jsonobj)
 
+    def to_json(self) -> str:
+        # TODO
+        pass
+
     @classmethod
     def from_json(cls, classname: str, j: str) -> 'Actor':
         """
@@ -198,7 +208,11 @@ class Actor(JavaObject):
         :type args: list
         """
         consumer = JClass("adams.core.option.ArrayConsumer")()
-        consumer.consume(self.jobject, args)
+        consumer.consume(self.jobject, jpype.JString[:](args))
+
+    def to_args(self) -> List[str]:
+        # TODO
+        pass
 
     @classmethod
     def from_args(cls, classname: str, args: List[str]) -> 'Actor':
