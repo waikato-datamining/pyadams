@@ -8,13 +8,19 @@ from pyadams.core.classes import JavaObject
 
 class Actor(JavaObject):
 
-    def __init__(self, jobject=None, classname: str = None):
+    def __init__(self, jobject=None, classname: str = None, apply_dict: Dict = None, apply_json: str = None, apply_args: List[str] = None):
         """
         Initializes the actor.
 
         :param jobject: the Java object to use, None if classname provided
         :param classname: the classname to use for instantiation, ignored if jobject provided
         :type classname: str
+        :param apply_dict: the dictionary with options to apply (JSON representation)
+        :type apply_dict: dict
+        :param apply_json: the JSON representation of the options to apply
+        :type apply_json: str
+        :param apply_args: the command-line options to apply
+        :type apply_args: list
         """
         if (jobject is None) and (classname is not None):
             jobject = JClass(classname)()
@@ -22,6 +28,12 @@ class Actor(JavaObject):
             raise Exception("Either jobject or classname must be provided!")
         self.enforce_type(jobject, "adams.flow.core.Actor")
         super().__init__(jobject)
+        if apply_dict is not None:
+            self.apply_dict(apply_dict)
+        elif apply_json is not None:
+            self.apply_json(apply_json)
+        elif apply_args is not None:
+            self.apply_args(apply_args)
 
     def set_up(self) -> str:
         """
@@ -144,12 +156,20 @@ class Actor(JavaObject):
 
         :param d: the dictionary of options to use
         :type d: dict
+        :return: itself
+        :rtype: Actor
         """
         self.apply_json(json.dumps(d))
+        return self
 
     def to_dict(self) -> Dict:
-        # TODO
-        pass
+        """
+        Returns its configuration as dictionary (in JSON format).
+
+        :return: the dictionary with options
+        :rtype: dict
+        """
+        return json.loads(self.to_json())
 
     @classmethod
     def from_dict(cls, classname: str, d: Dict) -> 'Actor':
@@ -173,16 +193,26 @@ class Actor(JavaObject):
 
         :param j: the JSON string of options to use
         :type j: str
+        :return: itself
+        :rtype: Actor
         """
         from net.minidev.json.parser import JSONParser
         parser = JSONParser(JSONParser.MODE_JSON_SIMPLE)
         jsonobj = parser.parse(j)
         consumer = JClass("adams.core.option.JsonConsumer")()
         consumer.consume(self.jobject, jsonobj)
+        return self
 
     def to_json(self) -> str:
-        # TODO
-        pass
+        """
+        Returns its configuration as JSON string.
+
+        :return: the json string
+        :rtype: str
+        """
+        producer = JClass("adams.core.option.JsonProducer")()
+        jsonobj = producer.produce(self.jobject)
+        return jsonobj.toJSONString()
 
     @classmethod
     def from_json(cls, classname: str, j: str) -> 'Actor':
@@ -206,13 +236,24 @@ class Actor(JavaObject):
 
         :param args: the list of command-line options
         :type args: list
+        :return: itself
+        :rtype: Actor
         """
         consumer = JClass("adams.core.option.ArrayConsumer")()
         consumer.consume(self.jobject, jpype.JString[:](args))
+        return self
 
     def to_args(self) -> List[str]:
-        # TODO
-        pass
+        """
+        Returns its configuration as command-line option list.
+
+        :return: the list of options
+        :rtype: list
+        """
+        producer = JClass("adams.core.option.ArrayProducer")()
+        array = producer.produce(self.jobject)
+        result = [x for x in array]
+        return result
 
     @classmethod
     def from_args(cls, classname: str, args: List[str]) -> 'Actor':
