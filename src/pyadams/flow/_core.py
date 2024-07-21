@@ -153,6 +153,7 @@ class Actor(JavaObject):
     def apply_dict(self, d: Dict):
         """
         Configures itself using the dictionary of options (in JSON format).
+        Requires adams-json module.
 
         :param d: the dictionary of options to use
         :type d: dict
@@ -165,6 +166,7 @@ class Actor(JavaObject):
     def to_dict(self) -> Dict:
         """
         Returns its configuration as dictionary (in JSON format).
+        Requires adams-json module.
 
         :return: the dictionary with options
         :rtype: dict
@@ -175,6 +177,7 @@ class Actor(JavaObject):
     def from_dict(cls, classname: str, d: Dict) -> 'Actor':
         """
         Instantiating an actor from a dictionary (in JSON format).
+        Requires adams-json module.
 
         :param classname: the classname of the actor
         :type classname: str
@@ -190,6 +193,7 @@ class Actor(JavaObject):
     def apply_json(self, j: str):
         """
         Configures itself from a JSON string.
+        Requires adams-json module.
 
         :param j: the JSON string of options to use
         :type j: str
@@ -206,6 +210,7 @@ class Actor(JavaObject):
     def to_json(self) -> str:
         """
         Returns its configuration as JSON string.
+        Requires adams-json module.
 
         :return: the json string
         :rtype: str
@@ -218,6 +223,7 @@ class Actor(JavaObject):
     def from_json(cls, classname: str, j: str) -> 'Actor':
         """
         Instantiating an actor from a JSON string.
+        Requires adams-json module.
 
         :param classname: the classname of the actor
         :type classname: str
