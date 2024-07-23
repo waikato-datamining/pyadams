@@ -129,6 +129,66 @@ class Actor(JavaObject):
         return self.jobject.isHeadless()
 
     @property
+    def name(self) -> str:
+        """
+        Returns the name of the actor.
+
+        :return: the name
+        :rtype: str
+        """
+        return self.jobject.getName()
+
+    @name.setter
+    def name(self, n):
+        """
+        Sets the name of the actor.
+
+        :param n: the name
+        :type n: str
+        """
+        self.jobject.setName(n)
+
+    @property
+    def skipped(self) -> bool:
+        """
+        Returns whether the actor is skipped.
+
+        :return: True if skipped
+        :rtype: bool
+        """
+        return self.jobject.getSkip()
+
+    @skipped.setter
+    def skipped(self, skip):
+        """
+        Sets whether the actor gets skipped.
+
+        :param skip: True if to skip
+        :type skip: bool
+        """
+        self.jobject.setSkip(skip)
+
+    @property
+    def annotations(self) -> str:
+        """
+        Returns the annotations.
+
+        :return: the annotations
+        :rtype: str
+        """
+        return self.jobject.getAnnotations().getValue()
+
+    @annotations.setter
+    def annotations(self, ann):
+        """
+        Sets the annotations.
+
+        :param ann: the annotations
+        :type ann: str
+        """
+        self.jobject.setAnnotations(JClass("adams.core.base.BaseAnnotation")(ann))
+
+    @property
     def parent(self) -> Optional['Actor']:
         """
         Returns whether the parent actor if available.
